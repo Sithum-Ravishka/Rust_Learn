@@ -23,7 +23,7 @@ fn main() {
     for day in 0..12 {
         println!("On the {} day of Christmas, my true love sent to me:", days[day]);
         
-        for i in (0..day + 1).rev() {
+        for i in (0..day + 1).rev() { 
             if day == 0 && i == 0 {
                 println!("{}", gifts[i]);
             } 
@@ -40,3 +40,7 @@ fn main() {
         println!();
     }
 }
+
+
+//day + 1 if day(2) 2 + 1 = 3 (0..3) code run 3 time 
+//"a Partridge in a Pear Tree","Two Turtle Doves","Three French Hens" print this tree line in gift array also reverse
