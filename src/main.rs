@@ -1,46 +1,29 @@
-fn main() {
-    let days = [
-        "first", "second", "third", "fourth", "fifth",
-        "sixth", "seventh", "eighth", "ninth", "tenth",
-        "eleventh", "twelfth"
-    ];
+use std::io;
 
-    let gifts = [
-        "a Partridge in a Pear Tree",
-        "Two Turtle Doves",
-        "Three French Hens",
-        "Four Calling Birds",
-        "Five Golden Rings",
-        "Six Geese a-Laying",
-        "Seven Swans a-Swimming",
-        "Eight Maids a-Milking",
-        "Nine Ladies Dancing",
-        "Ten Lords a-Leaping",
-        "Eleven Pipers Piping",
-        "Twelve Drummers Drumming"
-    ];
+fn main(){
 
-    for day in 0..12 {
-        println!("On the {} day of Christmas, my true love sent to me:", days[day]);
+    loop{
+    println!("Enter number: ");
+
+    let mut n = String::new();
+
+    io::stdin()
+        .read_line(&mut n)
+        .expect("Failed to read_line");
+
+    let n: u64 = n.trim().parse().expect("Please enter integer value");
+
+    let result = f(n);
+    println!("Fibonacci number at position {} is: {}", n, result);
+
+}}
+
+
+fn f(n: u64) -> u64 {
+    if n <= 1 {
+        return n as u64;
+    } else {
+        return f(n - 1) + f(n - 2);
         
-        for i in (0..day + 1).rev() { 
-            if day == 0 && i == 0 {
-                println!("{}", gifts[i]);
-            } 
-            
-            else if i == 0 {
-                println!("And {}", gifts[i]);
-            } 
-            
-            else {
-                println!("{}", gifts[i]);
-            }
-        }
-        
-        println!();
     }
 }
-
-
-//day + 1 if day(2) 2 + 1 = 3 (0..3) code run 3 time 
-//"a Partridge in a Pear Tree","Two Turtle Doves","Three French Hens" print this tree line in gift array also reverse
