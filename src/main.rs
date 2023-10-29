@@ -5,6 +5,7 @@ fn main() {
             Some(i) => Some(i + 1),
         }
     }
+    
 
     let five = Some(5);
     let six = plus_one(five);
