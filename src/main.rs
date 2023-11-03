@@ -1,38 +1,61 @@
-#[derive(Debug)]
-struct Rectangle {
-    width: u32,
-    height: u32,
-}
-
-impl Rectangle {
-    // Without `self` keyword as its first parameter, this is an associated function that returns a new instance of `Rectangle`.
-    // `Self` is an alias for the type `Rectangle`.
-    fn new(width: u32, height: u32) -> Self {
-        Self {
-            width,
-            height,
-        }
-    }
-
-    // `&self` borrows an immutable instance of the Rectangle type and reads its fields
-    fn area(&self) -> u32 {
-        self.width * self.height
-    }
-
-    // `&mut self` borrows a mutable instance of the Rectangle type and can mutate its fields
-    fn change_width(&mut self, new_width: u32) {
-        self.width = new_width;
-    }
-}
+use std::io;
 
 fn main() {
-    let mut rect = Rectangle::new(30, 50);
+    
+    let mut vec = Vec::new();
 
-    rect.change_width(60);
+    println!("Enter 's' to start program!!!");
+    println!("Enter 'q' to quit program!!!");
+    let mut input = String::new();
+    io::stdin().read_line(&mut input).expect("Faild to read line");
+    input = input.trim().to_string();
+    
+    let mut i = 1;
+    let mut x = 1;
 
-    println!(
-        "The area of the rectangle is {} square pixels.",
-        rect.area()
-    );
-    // => The area of the rectangle is 3000 square pixels.
+    loop {
+        if input == "q" {
+            println!("Quitting program...");
+            break;
+        }
+
+        match input.trim() {
+            "s" => {
+                println!("Enter name {}: or press 'q' to stop | press 'v' to view list", i);
+                let mut name = String::new();
+                io::stdin().read_line(&mut name).expect("Failed to read the line.");
+                name = name.trim().to_string();
+
+                if name == "q" {
+                    break;
+                }
+
+                if name == "v" {
+                    println!();
+                    println!("List of Names");
+                    println!("-------------");
+
+                    if vec.is_empty() {
+                        println!();
+                        println!("No names in the list");
+                        break;
+                    }
+                    for items in &vec {
+                        println!("{}. {}", x, items);
+                        x += 1;
+                    }
+
+                    println!();
+                    continue;
+                }
+
+                vec.push(name);
+                i += 1;
+            }
+            _ => {
+                println!("Invalid input");
+                break;
+            }
+        }
+    }
 }
