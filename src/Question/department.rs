@@ -5,6 +5,8 @@ fn main() {
     let mut eng = HashMap::new();
     let mut sal = HashMap::new();
 
+    
+
     loop {
         println!("What is department? (Engineering/Sales)");
         let mut department = String::new();
