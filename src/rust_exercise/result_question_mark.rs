@@ -1,5 +1,4 @@
 // Topic: Result & the question mark operator
-//
 
 
 #[derive(Clone, Copy, Debug)]
