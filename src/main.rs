@@ -1,47 +1,118 @@
 use std::io;
 
-enum Option {
-    Off,
-    Sleep,
-    Reboot,
-    Shutdown,
-    Hibernate,
-}
+fn main() {
+    let mut first_no = String::new();
+    let mut total :f32;
+    let mut operator = String::new();
 
-fn power_msg(option: Option){
+    // First number
+    loop {
+        println!("Enter First No: ");
+        first_no.clear();
+        io::stdin().read_line(&mut first_no).expect("Failed to read line");
+        match first_no.trim().parse() {
+            Ok(first_no) => {
+                total = first_no;
+                break;
+            }
+            Err(_) => {
+                println!("Please enter a numbers.");
+            }
+        }
+    }
 
-    match option {
-        Option::Off => println!("Turning off"),
-        Option::Sleep => println!("Putting to sleep"),
-        Option::Reboot => println!("Rebooting"),
-        Option::Shutdown => println!("Shutting down"),
-        Option::Hibernate => println!("Hibernating"),
+    loop {
+        // Arithmetic operator
+        println!("Enter the operator (+, -, *, /) (or '=' to exit): ");
+        operator.clear(); 
+        io::stdin().read_line(&mut operator).expect("Failed to read line");
+        let operator = operator.trim();
+
+        if operator == "=" {
+            println!("Total Result: {}", total);
+            break;
+        }
+
+        if operator == "+" || operator == "-" || operator == "*" || operator == "/" {
+            let mut second_no = String::new();
+        
+            loop {
+                println!("Enter Second No: ");
+                second_no.clear();
+                io::stdin().read_line(&mut second_no).expect("Failed to read line");
+                match second_no.trim().parse() {
+                    Ok(second_no) => {
+                        total = calculation_option(total, second_no, operator);
+                        println!("Current Result: {}", total);
+                        break;
+                    }
+                    Err(_) => {
+                        println!("Please enter a numbers.");
+                    }
+                }
+            }
+            
+        } else {
+            println!("Invalid operator. Please enter a valid operator (+, -, *, /) or '=' to exit.");
+        }
     }
 }
 
-fn main() {
-
-    println!("Enter your Option: ");
-    let mut user_input = String::new();
-
-    io::stdin().read_line(&mut user_input).expect("msg");
-
-    let user_input = user_input.trim().to_lowercase();
-
-
-    let option_match =  match user_input.as_str(){
-        "off" => Option::Off,
-        "sleep" => Option::Sleep,
-        "reboot" => Option::Reboot,
-        "shutdown" => Option::Shutdown,
-        "hibernate" => Option::Hibernate,
-
-        _ => {
-            println!("Invalid power option");
-            return;
+fn calculation_option(first_no: f32, second_no: f32, operator: &str) -> f32 {
+    match operator {
+        "+" => first_no + second_no,
+        "-" => first_no - second_no,
+        "*" => first_no * second_no,
+        "/" => {
+            if second_no != 0.0 {
+                first_no / second_no
+            } else {
+                println!("Division by zero is not allowed");
+                first_no
+            }
         }
-    };
-
-    power_msg(option_match);
-
+        _ => {
+            println!("Invalid operator");
+            first_no 
+        }
+    }
 }
+
+
+
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn test_addition() {
+        let result = calculation_option(2.0, 2.0, "+");
+        assert_eq!(result, 4.0);
+    }
+
+    #[test]
+    fn test_subtraction() {
+        let result = calculation_option(5.0, 3.0, "-");
+        assert_eq!(result, 2.0);
+    }
+
+    #[test]
+    fn test_multiplication() {
+        let result = calculation_option(3.0, 4.0, "*");
+        assert_eq!(result, 12.0);
+    }
+
+    #[test]
+    fn test_division() {
+        let result = calculation_option(10.0, 2.0, "/");
+        assert_eq!(result, 5.0);
+    }
+
+    #[test]
+    fn test_division_by_zero() {
+        let result = calculation_option(5.0, 0.0, "/");
+        assert_eq!(result, 5.0);
+    }
+}
+
