@@ -55,14 +55,13 @@ fn update_stoke(stoke: &mut HashMap<String, StokeItem>) {
 
     let name = get_input("Enter the name of the stock item to update: ");
 
-    if let Some(mut item) = stoke.remove(&name) {
-        println!("Removed stock item: {} - Amount: {}", name, item.amount);
+    if let Some(item) = stoke.get_mut(&name) {
+        println!("Current quantity of {}: {}", name, item.quantity);
 
         if let Ok(updated_quantity) = get_input("Enter the updated quantity:").trim().parse() {
             if let Ok(updated_amount) = get_input("Enter the updated amount:").trim().parse() {
                 item.quantity = updated_quantity;
                 item.amount = updated_amount;
-                stoke.insert(name.clone(), item);
                 println!("Stock item updated successfully!");
             } else {
                 println!("Invalid amount. Please enter a valid number.");
@@ -74,6 +73,7 @@ fn update_stoke(stoke: &mut HashMap<String, StokeItem>) {
         println!("Stock item '{}' not found.", name);
     }
 }
+
 
 fn add_bill(bill: &mut HashMap<String, i32>) {
     let name = get_input("Enter the item name of the bill:");
@@ -123,16 +123,15 @@ fn remove_bill(bill: &mut HashMap<String, i32>) {
 }
 
 fn update_bill(bill: &mut HashMap<String, i32>) {
-    view_bill(bill, &HashMap::new()); // Passing an empty stock HashMap for consistency
+    view_bill(bill, &HashMap::new());
 
     let name = get_input("Enter the name of the bill item to update: ");
 
-    if let Some(mut quantity) = bill.remove(&name) {
-        println!("Removed bill item: {} - Quantity: {}", name, quantity);
+    if let Some(quantity) = bill.get_mut(&name) {
+        println!("Current quantity of {}: {}", name, quantity);
 
         if let Ok(updated_quantity) = get_input("Enter the updated quantity:").trim().parse() {
-            quantity = updated_quantity;
-            bill.insert(name, quantity);
+            *quantity = updated_quantity;
             println!("Bill item updated successfully!");
         } else {
             println!("Invalid quantity. Please enter a valid number.");
@@ -141,6 +140,7 @@ fn update_bill(bill: &mut HashMap<String, i32>) {
         println!("Bill item '{}' not found.", name);
     }
 }
+
 
 fn print_invoice(stoke: &HashMap<String, StokeItem>, bill: &HashMap<String, i32>) {
     if bill.is_empty() {
@@ -176,11 +176,11 @@ fn main() {
     let mut bill = HashMap::new();
 
     loop {
-        println!("Main Menu:");
-        println!("1. Stock Operations");
-        println!("2. Bill Operations");
+        println!("******** Main Menu ********");
+        println!("1. Stock Management");
+        println!("2. Bill Add");
         println!("3. Print Invoice");
-        println!("4. Quit");
+        println!("4. Exit");
 
         let choice = get_input("Enter your choice:");
 
@@ -189,17 +189,17 @@ fn main() {
             "2" => bill_menu(&mut bill, &stoke),
             "3" => print_invoice(&stoke, &bill),
             "4" => {
-                println!("Goodbye!");
+                println!("Exit");
                 break;
             }
-            _ => println!("Invalid choice. Please try again."),
+            _ => println!("Invalid Option! Please Enter Valid Option"),
         }
     }
 }
 
 fn stock_menu(stoke: &mut HashMap<String, StokeItem>) {
     loop {
-        println!("Stock Menu:");
+        println!("******** Stock Menu ********");
         println!("1. Add stock");
         println!("2. View stock");
         println!("3. Remove stock");
@@ -221,7 +221,7 @@ fn stock_menu(stoke: &mut HashMap<String, StokeItem>) {
 
 fn bill_menu(bill: &mut HashMap<String, i32>, stoke: &HashMap<String, StokeItem>) {
     loop {
-        println!("Bill Menu:");
+        println!("******** Bill Menu ********");
         println!("1. Add bill");
         println!("2. View bill");
         println!("3. Remove bill");
